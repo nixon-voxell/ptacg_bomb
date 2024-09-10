@@ -3,6 +3,7 @@
 
 use bevy::prelude::*;
 
+// TODO: fix release workflow namings
 fn main() -> AppExit {
     App::new().add_plugins(DefaultPlugins).run()
 }
