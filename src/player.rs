@@ -6,6 +6,7 @@ pub struct PlayerPlugin;
 #[derive(Component)]
 pub struct Player{
     pub speed: f32,
+    pub rotation_damping: f32,
 }
 
 impl Plugin for PlayerPlugin{
@@ -27,13 +28,15 @@ fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
             },
             ..default()
         },
-        Player {speed: 300.0},
+        Player {
+            speed: 300.0,
+            rotation_damping: 10.0},
     ));
 
 }
 
 fn player_movement(
-    keyboard_input: Res<ButtonInput<KeyCode>>,  // New input system in Bevy 0.14
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,                      // Time resource for delta time
     mut query: Query<(&Player, &mut Transform)>,  // Query for player and its transform
 ) {
@@ -57,5 +60,21 @@ fn player_movement(
         // Apply movement based on direction, player speed, and delta time
         let movement = direction.normalize_or_zero() * player.speed * time.delta_seconds();
         transform.translation += movement;
+
+        if direction.length_squared() > 0.0 {
+            let target_angle = direction.y.atan2(direction.x); // Calculate target angle
+            let mut current_angle = transform.rotation.to_euler(EulerRot::ZYX).0; // Get current angle
+
+            // Smoothly damp the rotation towards the target angle
+            current_angle = Quat::slerp(
+                Quat::from_rotation_z(current_angle),
+                Quat::from_rotation_z(target_angle),
+                1.0 - (-player.rotation_damping * time.delta_seconds()).exp(),
+            )
+            .to_euler(EulerRot::ZYX)
+            .0;
+
+            transform.rotation = Quat::from_rotation_z(current_angle);
     }
+}
 }
