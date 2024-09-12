@@ -5,7 +5,7 @@
 //! and include it as a resource in a bevy app.
 
 use bevy::prelude::*;
-use leafwing_input_manager::prelude::*;
+use leafwing_input_manager::{prelude::*, user_input::InputKind};
 
 fn main() {
     App::new()
@@ -25,11 +25,16 @@ pub enum PlayerAction {
     Jump,
 }
 
-// Exhaustively match `PlayerAction` and define the default bindings to the input
+// Exhaustively match `PlayerAction` and define the default binding to the input
 impl PlayerAction {
-    fn mkb_input_map() -> InputMap<Self> {
-        InputMap::new([(Self::Jump, KeyCode::Space)])
-            .with_dual_axis(Self::Move, KeyboardVirtualDPad::WASD)
+    fn mkb_input_map() -> InputMap<PlayerAction> {
+        use KeyCode::*;
+        let mut input_map = InputMap::new([
+            (Self::Jump, UserInput::Single(InputKind::PhysicalKey(Space))),
+            (Self::Move, UserInput::VirtualDPad(VirtualDPad::wasd())),
+        ]);
+        input_map.insert(Self::Move, DualAxis::left_stick());
+        input_map
     }
 }
 
@@ -39,8 +44,8 @@ fn move_player(
 ) {
     if action_state.pressed(&PlayerAction::Move) {
         // We're working with gamepads, so we want to defensively ensure that we're using the clamped values
-        let axis_pair = action_state.clamped_axis_pair(&PlayerAction::Move);
-        println!("Move: ({}, {})", axis_pair.x, axis_pair.y);
+        let axis_pair = action_state.clamped_axis_pair(&PlayerAction::Move).unwrap();
+        println!("Move: ({}, {})", axis_pair.x(), axis_pair.y());
     }
 
     if action_state.pressed(&PlayerAction::Jump) {

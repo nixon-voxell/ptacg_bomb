@@ -6,7 +6,7 @@ license = "MIT OR Apache-2.0 OR CC0-1.0"
 
 [dependencies]
 bevy = { version = "0.14", features = ["wayland"] }
-leafwing-input-manager = "0.15"
+leafwing-input-manager = "0.14"
 rand = "0.8"
 # Compile low-severity logs out of native builds for performance.
 log = { version = "0.4", features = [
