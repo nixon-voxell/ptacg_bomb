@@ -18,6 +18,7 @@ tracing = { version = "0.1", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
+blenvy = "0.1.0-alpha.1"
 
 [features]
 default = [
