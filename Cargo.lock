@@ -827,17 +827,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ed72afbb6249a6803a3ed7bd2f68ff080d9392f550475e050b34c1e1c1e3e8f"
 
 [[package]]
-name = "bevy_quickstart"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "leafwing-input-manager",
- "log",
- "rand",
- "tracing",
-]
-
-[[package]]
 name = "bevy_reflect"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3223,6 +3212,17 @@ name = "profiling"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43d84d1d7a6ac92673717f9f6d1518374ef257669c24ebc5ac25d5033828be58"
+
+[[package]]
+name = "ptacg_bomb"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "leafwing-input-manager",
+ "log",
+ "rand",
+ "tracing",
+]
 
 [[package]]
 name = "quick-xml"
