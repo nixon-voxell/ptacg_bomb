@@ -7,30 +7,43 @@ pub enum PlayerAction {
     Jump,
 }
 
-// Exhaustively match `PlayerAction` and define the default binding to the input
+// Input mappings for PlayerAction
 impl PlayerAction {
-    pub fn mkb_input_map() -> InputMap<PlayerAction> {
-        use KeyCode::*;
-        let mut input_map = InputMap::new([
-            (Self::Jump, UserInput::Single(InputKind::PhysicalKey(Space))),
-            (Self::Move, UserInput::VirtualDPad(VirtualDPad::wasd())),
-        ]);
+    pub fn create_input_map() -> InputMap<PlayerAction> {
+        let mut input_map = InputMap::new(Self::default_bindings());
         input_map.insert(Self::Move, DualAxis::left_stick());
         input_map
     }
+
+    // Default key bindings for actions
+    fn default_bindings() -> [(PlayerAction, UserInput); 2] {
+        use KeyCode::*;
+        [
+            (Self::Jump, UserInput::Single(InputKind::PhysicalKey(Space))),
+            (Self::Move, UserInput::VirtualDPad(VirtualDPad::wasd())),
+        ]
+    }
 }
 
-pub fn move_player(
-    // action_state is stored as a resource
-    action_state: Res<ActionState<PlayerAction>>,
-) {
+// Handle player input actions
+pub fn handle_player_input(action_state: Res<ActionState<PlayerAction>>) {
     if action_state.pressed(&PlayerAction::Move) {
-        // We're working with gamepads, so we want to defensively ensure that we're using the clamped values
-        let axis_pair = action_state.clamped_axis_pair(&PlayerAction::Move).unwrap();
-        println!("Move: ({}, {})", axis_pair.x(), axis_pair.y());
+        process_movement(&action_state); // Process movement input
     }
 
     if action_state.pressed(&PlayerAction::Jump) {
-        println!("Jumping!");
+        execute_jump(); // Execute jump action
     }
+}
+
+// Process movement input
+fn process_movement(action_state: &Res<ActionState<PlayerAction>>) {
+    if let Some(axis_pair) = action_state.clamped_axis_pair(&PlayerAction::Move) {
+        println!("Move: ({}, {})", axis_pair.x(), axis_pair.y());
+    }
+}
+
+// Execute jump action
+fn execute_jump() {
+    println!("Jumping!");
 }
