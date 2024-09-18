@@ -1,5 +1,6 @@
 (
   assets:
    [ 
+    ("Player", File ( path: "blueprints/Player.glb" )),
    ]
 )

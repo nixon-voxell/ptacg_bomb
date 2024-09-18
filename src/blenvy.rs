@@ -1,13 +1,13 @@
 use bevy::prelude::*;
 use blenvy::*;
 
+pub struct BlenvyTestPlugin;
 
-pub struct BlenvyPlugin;
-
-impl Plugin for BlenvyPlugin{
-    fn build(&self, app:& mut App){
-        app.register_type::<Player>()
-            .add_systems(Startup,setup);
+impl Plugin for BlenvyTestPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugins(BlenvyPlugin::default())
+            .register_type::<Player>()
+            .add_systems(Startup, setup);
     }
 }
 
