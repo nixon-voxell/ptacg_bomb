@@ -17,7 +17,7 @@ fn main() {
         .add_plugins(InputManagerPlugin::<PlayerAction>::default())
         .init_resource::<ActionState<PlayerAction>>()
         .insert_resource(PlayerAction::create_input_map())
-        //.add_plugins(PlayerPlugin)
+        .add_plugins(PlayerPlugin)
         //.add_plugins(CameraPlugin)
         .add_plugins(BlenvyTestPlugin)
         .add_systems(Update, handle_player_input)

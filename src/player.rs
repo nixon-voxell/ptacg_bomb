@@ -2,17 +2,18 @@ use bevy::prelude::*;
 
 pub struct PlayerPlugin;
 
-
-#[derive(Component)]
-pub struct Player{
+#[derive(Component, Reflect)]
+#[reflect(Component)]
+pub struct Player {
     pub speed: f32,
     pub rotation_damping: f32,
 }
 
-impl Plugin for PlayerPlugin{
-    fn build(&self, app:&mut App){
-        app.add_systems(Startup, spawn_player);
-        app.add_systems(Update, player_movement);
+impl Plugin for PlayerPlugin {
+    fn build(&self, app: &mut App) {
+        app.register_type::<Player>()
+            .add_systems(Startup, spawn_player)
+            .add_systems(Update, player_movement);
     }
 }
 
@@ -22,7 +23,7 @@ fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
             texture: asset_server.load("images/car.png"),
             transform: Transform {
                 translation: Vec3::new(0.0, 0.0, 0.0), // Start at origin
-                scale: Vec3::splat(1.0),              // Scale the sprite
+                scale: Vec3::splat(1.0),               // Scale the sprite
                 rotation: Quat::from_rotation_z(1.6),
                 ..default()
             },
@@ -30,15 +31,15 @@ fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
         },
         Player {
             speed: 300.0,
-            rotation_damping: 10.0},
+            rotation_damping: 10.0,
+        },
     ));
-
 }
 
 fn player_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    time: Res<Time>,                      // Time resource for delta time
-    mut query: Query<(&Player, &mut Transform)>,  // Query for player and its transform
+    time: Res<Time>,                             // Time resource for delta time
+    mut query: Query<(&Player, &mut Transform)>, // Query for player and its transform
 ) {
     for (player, mut transform) in query.iter_mut() {
         let mut direction = Vec3::ZERO;
@@ -75,6 +76,6 @@ fn player_movement(
             .0;
 
             transform.rotation = Quat::from_rotation_z(current_angle);
+        }
     }
-}
 }

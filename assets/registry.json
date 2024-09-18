@@ -14711,6 +14711,31 @@
       "type": "string",
       "typeInfo": "Enum"
     },
+    "ptacg_bomb::player::Player": {
+      "additionalProperties": false,
+      "isComponent": true,
+      "isResource": false,
+      "long_name": "ptacg_bomb::player::Player",
+      "properties": {
+        "rotation_damping": {
+          "type": {
+            "$ref": "#/$defs/f32"
+          }
+        },
+        "speed": {
+          "type": {
+            "$ref": "#/$defs/f32"
+          }
+        }
+      },
+      "required": [
+        "speed",
+        "rotation_damping"
+      ],
+      "short_name": "Player",
+      "type": "object",
+      "typeInfo": "Struct"
+    },
     "smallvec::SmallVec<[bevy_ecs::entity::Entity; 8]>": {
       "isComponent": false,
       "isResource": false,
