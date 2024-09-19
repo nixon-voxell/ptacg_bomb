@@ -14644,58 +14644,22 @@
       "type": "object",
       "typeInfo": "Value"
     },
-    "ptacg_bomb::blenvy::Player": {
+    "ptacg_bomb::blenvy::PlayerCamera": {
       "additionalProperties": false,
       "isComponent": true,
       "isResource": false,
-      "long_name": "ptacg_bomb::blenvy::Player",
+      "long_name": "ptacg_bomb::blenvy::PlayerCamera",
       "properties": {
-        "agility": {
-          "type": {
-            "$ref": "#/$defs/f32"
-          }
-        },
-        "charisma": {
-          "type": {
-            "$ref": "#/$defs/f32"
-          }
-        },
-        "endurance": {
-          "type": {
-            "$ref": "#/$defs/f32"
-          }
-        },
-        "intelligence": {
-          "type": {
-            "$ref": "#/$defs/f32"
-          }
-        },
-        "luck": {
-          "type": {
-            "$ref": "#/$defs/f32"
-          }
-        },
-        "perception": {
-          "type": {
-            "$ref": "#/$defs/f32"
-          }
-        },
-        "strength": {
+        "follow_speed": {
           "type": {
             "$ref": "#/$defs/f32"
           }
         }
       },
       "required": [
-        "strength",
-        "perception",
-        "endurance",
-        "charisma",
-        "intelligence",
-        "agility",
-        "luck"
+        "follow_speed"
       ],
-      "short_name": "Player",
+      "short_name": "PlayerCamera",
       "type": "object",
       "typeInfo": "Struct"
     },

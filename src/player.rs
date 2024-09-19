@@ -12,28 +12,8 @@ pub struct Player {
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.register_type::<Player>()
-            .add_systems(Startup, spawn_player)
             .add_systems(Update, player_movement);
     }
-}
-
-fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn((
-        SpriteBundle {
-            texture: asset_server.load("images/car.png"),
-            transform: Transform {
-                translation: Vec3::new(0.0, 0.0, 0.0), // Start at origin
-                scale: Vec3::splat(1.0),               // Scale the sprite
-                rotation: Quat::from_rotation_z(1.6),
-                ..default()
-            },
-            ..default()
-        },
-        Player {
-            speed: 300.0,
-            rotation_damping: 10.0,
-        },
-    ));
 }
 
 fn player_movement(
