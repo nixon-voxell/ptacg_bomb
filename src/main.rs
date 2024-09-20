@@ -1,4 +1,5 @@
 mod input;
+mod procedural_generation;
 mod rectangle;
 mod rectangle_spawn;
 mod spawner;
