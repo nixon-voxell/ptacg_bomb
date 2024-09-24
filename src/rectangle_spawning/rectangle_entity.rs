@@ -1,11 +1,11 @@
 use bevy::prelude::*;
 use bevy::sprite::{MaterialMesh2dBundle, Mesh2dHandle};
 
-// This struct holds a size (width or height) for a rectangle.
-#[derive(Debug, Clone, Copy)]
-pub struct Dimension(f32);
+// Represents the dimensions of a rectangle
+#[derive(Debug, Clone, Copy, Component)]
+pub struct RectangleDimension(f32);
 
-impl Dimension {
+impl RectangleDimension {
     pub fn new(value: f32) -> Option<Self> {
         if value > 0.0 {
             Some(Self(value))
@@ -19,22 +19,22 @@ impl Dimension {
     }
 }
 
-impl Default for Dimension {
+impl Default for RectangleDimension {
     fn default() -> Self {
         Self(1.0)
     }
 }
 
-// This struct holds the settings for a rectangle (size and color).
-#[derive(Debug, Default, Clone)]
+// Configuration for the rectangle's properties
+#[derive(Debug, Default, Clone, Component)]
 pub struct RectangleConfig {
-    pub width: Dimension,
-    pub height: Dimension,
+    pub width: RectangleDimension,
+    pub height: RectangleDimension,
     pub color: Color,
 }
 
 impl RectangleConfig {
-    pub fn new(width: Dimension, height: Dimension, color: Color) -> Self {
+    pub fn new(width: RectangleDimension, height: RectangleDimension, color: Color) -> Self {
         Self {
             width,
             height,
@@ -42,16 +42,27 @@ impl RectangleConfig {
         }
     }
 
-    pub fn default_rectangle() -> Self {
+    pub fn default() -> Self {
         Self::new(
-            Dimension::new(100.0).unwrap(),
-            Dimension::new(100.0).unwrap(),
+            RectangleDimension::new(100.0).unwrap(),
+            RectangleDimension::new(100.0).unwrap(),
             Color::srgb(0.0, 0.5, 0.8),
         )
     }
 }
 
-// This function spawns a rectangle in the game.
+// Creates a mesh for the rectangle
+fn create_rectangle_mesh(
+    meshes: &mut ResMut<Assets<Mesh>>,
+    width: f32,
+    height: f32,
+) -> Result<Mesh2dHandle, String> {
+    let rectangle_mesh = Rectangle::new(width, height);
+    let handle = meshes.add(rectangle_mesh);
+    Ok(Mesh2dHandle(handle))
+}
+
+// Spawns a rectangle entity with the specified configuration and position
 pub fn spawn_rectangle(
     commands: &mut Commands,
     meshes: &mut ResMut<Assets<Mesh>>,
@@ -68,15 +79,4 @@ pub fn spawn_rectangle(
         ..default()
     });
     Ok(())
-}
-
-// This function creates a rectangle mesh for the game.
-fn create_rectangle_mesh(
-    meshes: &mut ResMut<Assets<Mesh>>,
-    width: f32,
-    height: f32,
-) -> Result<Mesh2dHandle, String> {
-    let rectangle_mesh = Rectangle::new(width, height);
-    let handle = meshes.add(rectangle_mesh);
-    Ok(Mesh2dHandle(handle))
 }
